@@ -1,9 +1,14 @@
-import fs from "fs";
-import path from "path";
-
-export default function handler(req, res) {
-  console.log("hello");
-  const filePath = path.join(process.cwd(), "public/data.json"); // Access data.json in the root
-  const data = fs.readFileSync(filePath, "utf8");
-  res.status(200).json(JSON.parse(data));
+export default async function handler(req, res) {
+  const response = await fetch(
+    "https://api.jsonbin.io/v3/b/675c951cad19ca34f8daad68",
+    {
+      headers: {
+        "X-Master-Key":
+          "$2a$10$LccuDAOpJD6AgjRfUqg8.eaLJWHyUQ8wKfcdmHi1Oggqk0ex9Gg8m",
+      },
+    }
+  );
+  let data = await response.json();
+  data = data.record;
+  res.status(200).json(data);
 }

@@ -1,15 +1,21 @@
-import fs from "fs";
-import path from "path";
+export default async function handler(req, res) {
+  // push to jsonbin.io
+  const response = await fetch(
+    "https://api.jsonbin.io/v3/b/675c951cad19ca34f8daad68",
+    {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        "X-Master-Key":
+          "$2a$10$LccuDAOpJD6AgjRfUqg8.eaLJWHyUQ8wKfcdmHi1Oggqk0ex9Gg8m",
+      },
+      body: JSON.stringify(req.body),
+    }
+  );
 
-export default function handler(req, res) {
-  if (req.method === "POST") {
-    const filePath = path.join(process.cwd(), "public/data.json");
-    const newData = req.body;
-
-    fs.writeFileSync(filePath, JSON.stringify(newData, null, 2));
+  if (response.ok) {
     res.status(200).json({ success: true });
-  } else {
-    res.setHeader("Allow", ["POST"]);
-    res.status(405).end(`Method ${req.method} Not Allowed`);
   }
+
+  res.status(500).json({ success: false });
 }
