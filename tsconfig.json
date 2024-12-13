@@ -17,6 +17,13 @@
       "@/*": ["./*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "pages/api/save-stores.js",
+    "pages/api/data.js",
+    "pages/form.jsx"
+  ],
   "exclude": ["node_modules"]
 }
