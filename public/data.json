@@ -1,0 +1,354 @@
+{
+  "Atlanta": {
+    "outerwear": {
+      "level": "heavy",
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": "medium",
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": "light",
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Aventura": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Boca Raton": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Brooklyn": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Forest Hills": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Huntington": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Manhattan": {
+    "outerwear": {
+      "level": "medium",
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": "light",
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": "heavy",
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": "light",
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": "heavy",
+      "lastUpdated": null
+    }
+  },
+  "Marlboro": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Mineola": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Newton": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Ridgewood": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Scarsdale": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Skokie": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Stamford": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "West Babylon": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  },
+  "Whippany": {
+    "outerwear": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "apparel": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "shoes": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "jewelery": {
+      "level": null,
+      "lastUpdated": null
+    },
+    "bags": {
+      "level": null,
+      "lastUpdated": null
+    }
+  }
+}
