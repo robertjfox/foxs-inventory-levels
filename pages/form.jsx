@@ -64,13 +64,15 @@ export default function MobileStoreSteps() {
 
   const handleSubmit = async () => {
     // update the lastUpdated key for each category
-    const categoriesWithTimeStamp = categories.reduce((acc, category) => {
-      acc[category] = {
-        ...categories[category],
-        lastUpdated: new Date().toISOString(),
-      };
-      return acc;
-    }, {});
+    const timeStamp = new Date().toISOString();
+
+    const categoriesWithTimeStamp = Object.keys(categories).reduce(
+      (acc, category) => {
+        acc[category] = { ...categories[category], lastUpdated: timeStamp };
+        return acc;
+      },
+      {}
+    );
 
     const updatedData = {
       ...data, // Preserve existing store data
