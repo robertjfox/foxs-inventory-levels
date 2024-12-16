@@ -1,8 +1,16 @@
 import twilio from "twilio";
+import dotenv from "dotenv";
+dotenv.config();
 
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+
+if (!accountSid || !authToken || !twilioPhoneNumber) {
+  console.error("Missing Twilio environment variables.");
+  process.exit(1); // Stop execution if vars are missing
+}
+
 const client = twilio(accountSid, authToken);
 
 export default async function handler(req, res) {
@@ -25,3 +33,6 @@ export default async function handler(req, res) {
     res.status(500).json({ success: false, error: error.message });
   }
 }
+
+// run it
+handler({ method: "POST" }, { status: () => {}, json: console.log });

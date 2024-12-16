@@ -1,6 +1,12 @@
+import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
 export default function MobileStoreSteps() {
+  const router = useRouter();
+
+  // query params storeName
+  const storeFromParams = router.query.store;
+
   const [data, setData] = useState({});
   const [storeName, setStoreName] = useState("");
   const [categories, setCategories] = useState({});
@@ -9,7 +15,13 @@ export default function MobileStoreSteps() {
   const storeNames = Object.keys(data || {});
   const defaultCategories = Object.keys(data[storeNames[0]] || {});
 
-  // get the data from api/data
+  // if store name set and skip step 1
+  useEffect(() => {
+    if (storeFromParams) {
+      setStoreName(storeFromParams);
+      setStep(2);
+    }
+  }, [storeFromParams]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -131,8 +143,6 @@ export default function MobileStoreSteps() {
       {step === 2 && (
         <div>
           <h1>Set Category Levels</h1>
-          {/* // display store name */}
-          <h2>{storeName}</h2>
           {defaultCategories.map((category) => (
             <div
               key={category}
@@ -144,7 +154,12 @@ export default function MobileStoreSteps() {
               }}
             >
               <label
-                style={{ display: "block", marginBottom: "5px", width: 100 }}
+                style={{
+                  display: "block",
+                  marginBottom: "5px",
+                  width: 200,
+                  fontSize: "1.5em",
+                }}
               >
                 {category}
               </label>
@@ -159,6 +174,8 @@ export default function MobileStoreSteps() {
                   backgroundColor: getBackgroundColor(
                     categories[category]?.level
                   ),
+                  // make em huge
+                  fontSize: "1.5em",
                 }}
               >
                 <option value="">Select Level</option>
@@ -179,6 +196,8 @@ export default function MobileStoreSteps() {
               borderRadius: "5px",
               cursor: "pointer",
               marginTop: "20px",
+              // make bigger
+              fontSize: "1.5em",
             }}
           >
             Submit
