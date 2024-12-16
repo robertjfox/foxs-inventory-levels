@@ -14,22 +14,22 @@ if (!accountSid || !authToken || !twilioPhoneNumber) {
 const client = twilio(accountSid, authToken);
 
 const phoneNumbers = {
-  // "Aventura": "+15162824831",
-  // "Boca Raton": "+15162824831",
-  // "Atlanta": "+14049938416",
-  // "Mineola": "+15162006657",
-  // "Skokie": "+18472322374",
-  // "Manhattan": "+12122099269",
-  // "Whippany": "+19734410684",
+  Aventura: "+15618668364",
+  "Boca Raton": "+15617166900",
+  Atlanta: "+16784140553",
+  Mineola: "+15162503196",
+  Skokie: "+18476684010",
+  Manhattan: "+19172946311",
+  Whippany: "+12012325191",
   Stamford: "+15162824831",
-  // "Newton": "+19734410684",
-  // "Marlboro": "+19734410684",
-  // "Ridgewood": "+19734410684",
-  // "Eastchester": "+19734410684",
-  // "Brooklyn": "+19734410684",
-  // "Forest Hills": "+19734410684",
-  // "Huntington": "+19734410684",
-  // "West Babylon": "+19734410684",
+  Newton: "+16178175778",
+  Marlboro: "+17323106645",
+  Ridgewood: "+12017399838",
+  Eastchester: "+19145573081",
+  Brooklyn: "+19178460271",
+  "Forest Hills": "+19178866901",
+  Huntington: "+15167612020",
+  "West Babylon": "+15163178046",
 };
 
 export default async function handler(req, res) {
@@ -42,7 +42,10 @@ export default async function handler(req, res) {
 
     for (const [store, phoneNumber] of Object.entries(phoneNumbers)) {
       const message = await client.messages.create({
-        body: `Please report your inventory levels: https://foxs-inventory-levels.vercel.app/form?store=${encodeURIComponent(
+        body: `
+        Hi! This is an automated message from Fox's.
+        Please report your store's inventory levels using the following link: 
+        https://foxs-inventory-levels.vercel.app/form?store=${encodeURIComponent(
           store
         )}`,
         from: twilioPhoneNumber,
@@ -59,9 +62,3 @@ export default async function handler(req, res) {
     res.status(500).json({ success: false, error: error.message });
   }
 }
-
-// run the handler
-handler(
-  { method: "POST" },
-  { status: () => ({ json: (data) => console.log(data) }) }
-);

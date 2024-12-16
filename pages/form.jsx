@@ -1,6 +1,15 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 
+const storesWithShoes = [
+  "Mineola",
+  "Huntington",
+  "Skokie",
+  "Atlanta",
+  "Ridgewood",
+  "Brooklyn",
+];
+
 export default function MobileStoreSteps() {
   const router = useRouter();
 
@@ -13,45 +22,46 @@ export default function MobileStoreSteps() {
   const [step, setStep] = useState(1);
 
   const storeNames = Object.keys(data || {});
-  const defaultCategories = Object.keys(data[storeNames[0]] || {});
+  const defaultCategories = Object.keys(data[storeName] || {});
 
-  // if store name set and skip step 1
+  // Skip step 1 if storeFromParams is present
   useEffect(() => {
     if (storeFromParams) {
       setStoreName(storeFromParams);
+      handleFetchData(storeFromParams);
       setStep(2);
     }
   }, [storeFromParams]);
 
-  useEffect(() => {
-    const fetchData = async () => {
+  const handleFetchData = async (store) => {
+    try {
       const response = await fetch("/api/data");
       const data = await response.json();
-
       setData(data);
-    };
 
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    if (step === 2 && storeName) {
-      const originalData = data[storeName] || {};
-      // set the "level" for each category to null
-      const updatedCategories = defaultCategories.reduce((acc, category) => {
-        acc[category] = { ...originalData[category], level: null };
-        return acc;
-      }, {});
-
+      const originalData = data[store] || {};
+      // Initialize categories with levels set to null
+      const updatedCategories = Object.keys(originalData).reduce(
+        (acc, category) => {
+          acc[category] = { ...originalData[category], level: null };
+          return acc;
+        },
+        {}
+      );
       setCategories(updatedCategories);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      alert("An error occurred while fetching data.");
     }
-  }, [step, storeName]);
+  };
 
-  const handleStoreNameSubmit = () => {
+  const handleStoreNameSubmit = async () => {
     if (!storeName) {
       alert("Please select a store name.");
       return;
     }
+
+    await handleFetchData(storeName);
     setStep(2);
   };
 
@@ -63,7 +73,6 @@ export default function MobileStoreSteps() {
   };
 
   const handleSubmit = async () => {
-    // update the lastUpdated key for each category
     const timeStamp = new Date().toISOString();
 
     const categoriesWithTimeStamp = Object.keys(categories).reduce(
@@ -75,18 +84,18 @@ export default function MobileStoreSteps() {
     );
 
     const updatedData = {
-      ...data, // Preserve existing store data
-      [storeName]: categoriesWithTimeStamp, // Update the store data
+      ...data,
+      [storeName]: categoriesWithTimeStamp,
     };
 
     try {
       const response = await fetch("/api/save-stores", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(updatedData), // Send the merged data
+        body: JSON.stringify(updatedData),
       });
       if (response.ok) {
-        setData(updatedData); // Update the local state to reflect the changes
+        setData(updatedData);
         setStep(3);
       } else {
         alert("Failed to save data.");
@@ -102,7 +111,6 @@ export default function MobileStoreSteps() {
       case "light":
         return "#d1f5d3";
       case "medium":
-        // yellow
         return "#fff3cd";
       case "heavy":
         return "#ffdede";
@@ -160,7 +168,6 @@ export default function MobileStoreSteps() {
 
       {step === 2 && (
         <div>
-          {/* // show store name */}
           <h1>{storeName}</h1>
           <h1>Set Category Levels</h1>
           {defaultCategories.map((category) => (
@@ -168,9 +175,13 @@ export default function MobileStoreSteps() {
               key={category}
               style={{
                 marginBottom: "10px",
-                display: "flex",
                 gap: 20,
                 alignItems: "center",
+                // hide if storeName is not in storesWithShoes
+                display:
+                  category === "shoes" && !storesWithShoes.includes(storeName)
+                    ? "none"
+                    : "flex",
               }}
             >
               <label
@@ -194,7 +205,6 @@ export default function MobileStoreSteps() {
                   backgroundColor: getBackgroundColor(
                     categories[category]?.level
                   ),
-                  // make em huge
                   fontSize: "1.5em",
                 }}
               >
@@ -216,7 +226,6 @@ export default function MobileStoreSteps() {
               borderRadius: "5px",
               cursor: "pointer",
               marginTop: "20px",
-              // make bigger
               fontSize: "1.5em",
             }}
           >
@@ -225,7 +234,6 @@ export default function MobileStoreSteps() {
         </div>
       )}
 
-      {/* // step 3 simple thank you */}
       {step === 3 && (
         <div>
           <h1>Thank you for your submission!</h1>
