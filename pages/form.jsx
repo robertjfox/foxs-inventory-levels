@@ -36,7 +36,14 @@ export default function MobileStoreSteps() {
 
   useEffect(() => {
     if (step === 2 && storeName) {
-      setCategories(data[storeName] || {});
+      const originalData = data[storeName] || {};
+      // set the "level" for each category to null
+      const updatedCategories = defaultCategories.reduce((acc, category) => {
+        acc[category] = { ...originalData[category], level: null };
+        return acc;
+      }, {});
+
+      setCategories(updatedCategories);
     }
   }, [step, storeName]);
 
@@ -56,9 +63,18 @@ export default function MobileStoreSteps() {
   };
 
   const handleSubmit = async () => {
+    // update the lastUpdated key for each category
+    const categoriesWithTimeStamp = categories.reduce((acc, category) => {
+      acc[category] = {
+        ...categories[category],
+        lastUpdated: new Date().toISOString(),
+      };
+      return acc;
+    }, {});
+
     const updatedData = {
       ...data, // Preserve existing store data
-      [storeName]: categories, // Update the selected store's data
+      [storeName]: categoriesWithTimeStamp, // Update the store data
     };
 
     try {
@@ -142,6 +158,8 @@ export default function MobileStoreSteps() {
 
       {step === 2 && (
         <div>
+          {/* // show store name */}
+          <h1>{storeName}</h1>
           <h1>Set Category Levels</h1>
           {defaultCategories.map((category) => (
             <div
