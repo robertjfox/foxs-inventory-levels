@@ -15,13 +15,13 @@ const client = twilio(accountSid, authToken);
 
 const phoneNumbers = {
   // "Aventura": "+15162824831",
-  "Boca Raton": "+15162824831",
+  // "Boca Raton": "+15162824831",
   // "Atlanta": "+14049938416",
   // "Mineola": "+15162006657",
   // "Skokie": "+18472322374",
   // "Manhattan": "+12122099269",
   // "Whippany": "+19734410684",
-  // "Stamford": "+12038850266",
+  Stamford: "+15162824831",
   // "Newton": "+19734410684",
   // "Marlboro": "+19734410684",
   // "Ridgewood": "+19734410684",
