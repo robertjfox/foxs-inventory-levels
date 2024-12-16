@@ -12,4 +12,6 @@ jobs:
     steps:
       - name: Call Vercel API to Send Text
         run: |
-          curl -X POST https://foxs-inventory-levels.vercel.app/api/send-text
+          response=$(curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST https://foxs-inventory-levels.vercel.app/api/send-text)
+          echo "$response"
+        shell: bash
