@@ -2,6 +2,7 @@
   "name": "foxs-inventory-levels",
   "version": "0.1.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
@@ -12,7 +13,8 @@
     "fs": "^0.0.1-security",
     "next": "15.1.0",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "twilio": "^5.4.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",

@@ -1,0 +1,15 @@
+name: Weekly Text Message
+
+on:
+  schedule:
+    # Run every 2 minutes
+    - cron: "*/2 * * * *"
+
+jobs:
+  send_text:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Vercel API to Send Text
+        run: |
+          curl -X POST https://foxs-inventory-levels.vercel.app/api/send-text

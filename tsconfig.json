@@ -12,6 +12,8 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "jsx": "preserve",
+    // allow any type
+    "noImplicitAny": false,
     "incremental": true,
     "paths": {
       "@/*": ["./*"]
@@ -23,7 +25,8 @@
     "**/*.tsx",
     "pages/api/save-stores.js",
     "pages/api/data.js",
-    "pages/form.jsx"
+    "pages/form.jsx",
+    "pages/api/send-text.js"
   ],
   "exclude": ["node_modules"]
 }
