@@ -75,6 +75,10 @@ export default function MobileStoreSteps() {
   const handleSubmit = async () => {
     const timeStamp = new Date().toISOString();
 
+    // fetch data from api to get the latest data
+    const freshData = await fetch("/api/data");
+    const freshDataJson = await freshData.json();
+
     const categoriesWithTimeStamp = Object.keys(categories).reduce(
       (acc, category) => {
         acc[category] = { ...categories[category], lastUpdated: timeStamp };
@@ -84,7 +88,7 @@ export default function MobileStoreSteps() {
     );
 
     const updatedData = {
-      ...data,
+      ...freshDataJson,
       [storeName]: categoriesWithTimeStamp,
     };
 
