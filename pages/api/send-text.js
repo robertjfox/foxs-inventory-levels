@@ -67,15 +67,28 @@ async function fetchLastUpdatedData() {
 
 // Check if lastUpdated is since last Monday
 function isUpdatedSinceMonday(lastUpdated) {
-  // handle the null case
+  const today = new Date();
+  const lastMonday = startOfWeek(today, { weekStartsOn: 1 }); // Get the most recent Monday
+
+  // If it's Monday, reset the cycle and send messages to everyone
+  if (today.getDay() === 1) {
+    console.log(
+      "Today is Monday, starting a new cycle. Sending messages to everyone."
+    );
+    return false;
+  }
+
+  // If lastUpdated is null, send the message
   if (!lastUpdated) {
     console.log("Last updated date is null, we need to send a message.");
     return false;
   }
 
-  const lastMonday = startOfWeek(new Date(), { weekStartsOn: 1 }); // Get last Monday
+  // Check if lastUpdated is after the most recent Monday
   const updatedDate = parseISO(lastUpdated);
   const result = isAfter(updatedDate, lastMonday);
+
+  // If updated since Monday, no need to send a message
   return result;
 }
 
