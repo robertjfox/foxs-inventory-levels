@@ -2,7 +2,7 @@ name: Weekly Text Message
 
 on:
   schedule:
-    # Run every monday morning at 9 am est
+    # Run every morning at 9 am est
     - cron: "0 13 * * 1"
 
 jobs:
