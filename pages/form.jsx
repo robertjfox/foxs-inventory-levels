@@ -43,7 +43,7 @@ export default function MobileStoreSteps() {
       // Initialize categories with levels set to null
       const updatedCategories = Object.keys(originalData).reduce(
         (acc, category) => {
-          acc[category] = { ...originalData[category], level: null };
+          acc[category] = null;
           return acc;
         },
         {}
@@ -68,7 +68,7 @@ export default function MobileStoreSteps() {
   const handleCategoryChange = (category, level) => {
     setCategories((prev) => ({
       ...prev,
-      [category]: { ...prev[category], level },
+      [category]: level,
     }));
   };
 
@@ -79,13 +79,10 @@ export default function MobileStoreSteps() {
     const freshData = await fetch("/api/data");
     const freshDataJson = await freshData.json();
 
-    const categoriesWithTimeStamp = Object.keys(categories).reduce(
-      (acc, category) => {
-        acc[category] = { ...categories[category], lastUpdated: timeStamp };
-        return acc;
-      },
-      {}
-    );
+    const categoriesWithTimeStamp = {
+      ...categories,
+      lastUpdated: timeStamp,
+    };
 
     const updatedData = {
       ...freshDataJson,
@@ -174,51 +171,55 @@ export default function MobileStoreSteps() {
         <div>
           <h1>{storeName}</h1>
           <h1>Set Category Levels</h1>
-          {defaultCategories.map((category) => (
-            <div
-              key={category}
-              style={{
-                marginBottom: "10px",
-                gap: 20,
-                alignItems: "center",
-                // hide if storeName is not in storesWithShoes
-                display:
-                  category === "shoes" && !storesWithShoes.includes(storeName)
-                    ? "none"
-                    : "flex",
-              }}
-            >
-              <label
+          {defaultCategories.map((category) => {
+            if (category === "lastUpdated") return null;
+
+            return (
+              <div
+                key={category}
                 style={{
-                  display: "block",
-                  marginBottom: "5px",
-                  width: 200,
-                  fontSize: "1.5em",
+                  marginBottom: "10px",
+                  gap: 20,
+                  alignItems: "center",
+                  // hide if storeName is not in storesWithShoes
+                  display:
+                    category === "shoes" && !storesWithShoes.includes(storeName)
+                      ? "none"
+                      : "flex",
                 }}
               >
-                {category}
-              </label>
-              <select
-                value={categories[category]?.level || ""}
-                onChange={(e) => handleCategoryChange(category, e.target.value)}
-                style={{
-                  width: "100%",
-                  padding: "10px",
-                  borderRadius: "5px",
-                  border: "1px solid #ccc",
-                  backgroundColor: getBackgroundColor(
-                    categories[category]?.level
-                  ),
-                  fontSize: "1.5em",
-                }}
-              >
-                <option value="">Select Level</option>
-                <option value="light">Light</option>
-                <option value="medium">Medium</option>
-                <option value="heavy">Heavy</option>
-              </select>
-            </div>
-          ))}
+                <label
+                  style={{
+                    display: "block",
+                    marginBottom: "5px",
+                    width: 200,
+                    fontSize: "1.5em",
+                  }}
+                >
+                  {category}
+                </label>
+                <select
+                  value={categories[category] || ""}
+                  onChange={(e) =>
+                    handleCategoryChange(category, e.target.value)
+                  }
+                  style={{
+                    width: "100%",
+                    padding: "10px",
+                    borderRadius: "5px",
+                    border: "1px solid #ccc",
+                    backgroundColor: getBackgroundColor(categories[category]),
+                    fontSize: "1.5em",
+                  }}
+                >
+                  <option value="">Select Level</option>
+                  <option value="light">Light</option>
+                  <option value="medium">Medium</option>
+                  <option value="heavy">Heavy</option>
+                </select>
+              </div>
+            );
+          })}
           <button
             onClick={handleSubmit}
             style={{

@@ -63,6 +63,13 @@ export default function Stores() {
             }, {});
         }
 
+        // put lastUpdated at the end
+        for (const storeName in sortedData) {
+          const lastUpdated = sortedData[storeName].lastUpdated;
+          delete sortedData[storeName].lastUpdated;
+          sortedData[storeName].lastUpdated = lastUpdated;
+        }
+
         setStores(sortedData);
         setLoading(false);
       } catch (error) {
@@ -73,33 +80,6 @@ export default function Stores() {
 
     fetchData();
   }, []);
-
-  const handleLevelChange = (storeName, category, value) => {
-    setStores((prev) => ({
-      ...prev,
-      [storeName]: {
-        ...prev[storeName],
-        [category]: {
-          ...prev[storeName][category],
-          level: value,
-        },
-      },
-    }));
-  };
-
-  const saveChanges = async () => {
-    const response = await fetch("/api/save-stores", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(stores),
-    });
-
-    if (response.ok) {
-      alert("Data saved successfully!");
-    } else {
-      alert("Failed to save data.");
-    }
-  };
 
   if (loading) return <div>Loading...</div>;
 
@@ -162,28 +142,62 @@ export default function Stores() {
                 >
                   {storeIdToThreeLetterMap[storeName.toUpperCase()]}
                 </td>
-                {Object.keys(stores[storeName]).map((category) => (
-                  <td
-                    key={category}
-                    style={{
-                      border: "1px solid #ccc",
-                      padding: "5px",
-                      // if level is null make text color 0.5
-                      color: getCellTextColor(
-                        stores[storeName][category].level
-                      ),
-                      fontWeight:
-                        stores[storeName][category].level === "light"
-                          ? "600"
-                          : "normal",
-                      backgroundColor: getBackgroundColor(
-                        stores[storeName][category].level
-                      ),
-                    }}
-                  >
-                    {category}
-                  </td>
-                ))}
+                {Object.keys(stores[storeName]).map((category) => {
+                  if (category === "lastUpdated") {
+                    const lastUpdated = stores[storeName][category]
+                      ? new Date(stores[storeName][category])
+                      : null;
+
+                    const dateString = lastUpdated
+                      ? lastUpdated.toLocaleString("en-US", {
+                          month: "2-digit",
+                          day: "2-digit",
+                        })
+                      : null;
+
+                    return (
+                      <td
+                        key={category}
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "5px",
+                          // if level is null make text color 0.5
+                          color: getCellTextColor(stores[storeName][category]),
+                          fontWeight:
+                            stores[storeName][category] === "light"
+                              ? "600"
+                              : "normal",
+                          backgroundColor: getBackgroundColor(
+                            stores[storeName][category]
+                          ),
+                        }}
+                      >
+                        {dateString}
+                      </td>
+                    );
+                  }
+
+                  return (
+                    <td
+                      key={category}
+                      style={{
+                        border: "1px solid #ccc",
+                        padding: "5px",
+                        // if level is null make text color 0.5
+                        color: getCellTextColor(stores[storeName][category]),
+                        fontWeight:
+                          stores[storeName][category] === "light"
+                            ? "600"
+                            : "normal",
+                        backgroundColor: getBackgroundColor(
+                          stores[storeName][category]
+                        ),
+                      }}
+                    >
+                      {category}
+                    </td>
+                  );
+                })}
               </tr>
             ))}
           </tbody>
