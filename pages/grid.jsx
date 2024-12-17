@@ -1,8 +1,43 @@
 import { useState, useEffect } from "react";
 
+export const storeIdToThreeLetterMap = {
+  MINEOLA: "M80",
+  HUNTINGTON: "HUN",
+  EASTCHESTER: "EAS",
+  RIDGEWOOD: "RIG",
+  SKOKIE: "SKO",
+  WHIPPANY: "WHP",
+  STAMFORD: "STA",
+  ATLANTA: "ATL",
+  "BOCA RATON": "BOC",
+  AVENTURA: "AVN",
+  BROOKLYN: "BKN",
+  MARLBORO: "MLB",
+  MINEOLA: "M79",
+  "FOREST HILLS": "FHL",
+  MANHATTAN: "MAN",
+  "WEST BABYLON": "WBA",
+  NEWTON: "NWT",
+};
+
 export default function Stores() {
   const [stores, setStores] = useState({});
   const [loading, setLoading] = useState(true);
+
+  // if no level, make text color 0.5, if light make text white, if medium make text black
+  const getCellTextColor = (level) => {
+    switch (level) {
+      case "light":
+        return "black";
+      case "medium":
+        return "black";
+      case "heavy":
+        return "black";
+      // grey
+      default:
+        return "#b3b3b3";
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -13,10 +48,20 @@ export default function Stores() {
         const data = await response.json();
 
         const sortedKeys = Object.keys(data).sort();
-        const sortedData = sortedKeys.reduce((obj, key) => {
+        let sortedData = sortedKeys.reduce((obj, key) => {
           obj[key] = data[key];
           return obj;
         }, {});
+
+        // sort all categories alphabetically
+        for (const storeName in sortedData) {
+          sortedData[storeName] = Object.keys(sortedData[storeName])
+            .sort()
+            .reduce((obj, key) => {
+              obj[key] = sortedData[storeName][key];
+              return obj;
+            }, {});
+        }
 
         setStores(sortedData);
         setLoading(false);
@@ -61,9 +106,9 @@ export default function Stores() {
   const getBackgroundColor = (level) => {
     switch (level) {
       case "light":
-        return "#d4edda";
-      case "medium":
-        return "#ffeeba";
+        return "#5cb85c";
+      case "medium": // dark gray
+        return "#e2e3e5";
       case "heavy":
         return "#f8d7da";
       default:
@@ -76,29 +121,10 @@ export default function Stores() {
       style={{
         padding: 0,
         fontFamily: "Arial, sans-serif",
-        maxWidth: "100%",
+        maxWidth: 700,
         overflowX: "auto",
       }}
     >
-      <h1 style={{ fontSize: "1.5rem", textAlign: "center" }}>
-        Editable Store Categories
-      </h1>
-      <button
-        onClick={saveChanges}
-        style={{
-          padding: "10px 15px",
-          backgroundColor: "#0070f3",
-          color: "#fff",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          marginBottom: "20px",
-          fontSize: "1rem",
-          width: "100%",
-        }}
-      >
-        Save Changes
-      </button>
       <div style={{ overflowX: "auto" }}>
         <table
           style={{
@@ -134,7 +160,7 @@ export default function Stores() {
                     fontWeight: "bold",
                   }}
                 >
-                  {storeName}
+                  {storeIdToThreeLetterMap[storeName.toUpperCase()]}
                 </td>
                 {Object.keys(stores[storeName]).map((category) => (
                   <td
@@ -142,32 +168,20 @@ export default function Stores() {
                     style={{
                       border: "1px solid #ccc",
                       padding: "5px",
+                      // if level is null make text color 0.5
+                      color: getCellTextColor(
+                        stores[storeName][category].level
+                      ),
+                      fontWeight:
+                        stores[storeName][category].level === "light"
+                          ? "600"
+                          : "normal",
                       backgroundColor: getBackgroundColor(
                         stores[storeName][category].level
                       ),
                     }}
                   >
-                    <select
-                      value={stores[storeName][category].level || ""}
-                      onChange={(e) =>
-                        handleLevelChange(storeName, category, e.target.value)
-                      }
-                      style={{
-                        width: "100%",
-                        padding: "5px",
-                        borderRadius: "3px",
-                        border: "1px solid #ccc",
-                        fontSize: "1rem",
-                        backgroundColor: getBackgroundColor(
-                          stores[storeName][category].level
-                        ),
-                      }}
-                    >
-                      <option value="">Select</option>
-                      <option value="light">Light</option>
-                      <option value="medium">Medium</option>
-                      <option value="heavy">Heavy</option>
-                    </select>
+                    {category}
                   </td>
                 ))}
               </tr>
