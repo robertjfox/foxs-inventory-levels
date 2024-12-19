@@ -33,7 +33,7 @@ const storeNames = {
   Eastchester: "Gina",
   Brooklyn: "Cathy",
   "Forest Hills": "Suzie",
-  Huntington: "Caryn",
+  Huntington: "Christie",
   "West Babylon": "Mayra",
 };
 
@@ -52,7 +52,7 @@ const phoneNumbers = {
   Eastchester: "+19145573081",
   Brooklyn: "+19178460271",
   "Forest Hills": "+19178866901",
-  Huntington: "+16317965024",
+  Huntington: "+16318962527",
   "West Babylon": "+15163178046",
 };
 
