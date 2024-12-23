@@ -41,7 +41,7 @@ const phoneNumbers = {
   Aventura: "+15618668364",
   "Boca Raton": "+15617166900",
   Atlanta: "+16784140553",
-  Mineola: "+15162503196",
+  Mineola: "+19174689903",
   Skokie: "+18476684010",
   Manhattan: "+19172946311",
   Whippany: "+12012325191",
@@ -117,7 +117,11 @@ export default async function handler(req, res) {
 
         This is an automated message from Robert Fox 🦊.
 
-        Please report your store's inventory levels using the following link:
+        Please help improve our distribution process by reporting your inventory levels using the following link.
+
+        If unable to complete the form, please share the link with another team member.
+
+        Thank you!
 
         https://foxs-inventory-levels.vercel.app/form?store=${encodeURIComponent(
           store
