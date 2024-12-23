@@ -87,14 +87,35 @@ export default function Stores() {
     switch (level) {
       case "light":
         return "#5cb85c";
-      case "medium": // dark gray
-        return "#e2e3e5";
+      case "medium": // dark grey
+        return "#a9a9a9";
       case "heavy":
-        return "#f8d7da";
+        return "#d9534f";
       default:
         return "#ffffff";
     }
   };
+
+ // last monday
+  const currentOrLastMonday = () => {
+    const today = new Date();
+    const day = today.getDay();
+    const diff = today.getDate() - day + (day == 0 ? -6 : 1); // adjust when day is sunday
+    return new Date(today.setDate(diff));
+  };
+
+  const lastMonday = currentOrLastMonday();
+
+  // if lastUpdated is before last Monday, make row 50% opacity
+  const getRowOpacity = (lastUpdated) => {
+    let lastUpdatedDate = new Date(lastUpdated);
+
+    // make last update date 11:59pm
+    lastUpdatedDate.setHours(23, 59, 59, 999);
+
+    if (lastUpdatedDate < lastMonday) return 0.5;
+    return
+  }
 
   return (
     <div
@@ -131,7 +152,7 @@ export default function Stores() {
           </thead>
           <tbody>
             {Object.keys(stores).map((storeName) => (
-              <tr key={storeName}>
+              <tr key={storeName} style={{ opacity: getRowOpacity(stores[storeName].lastUpdated) }}>
                 <td
                   style={{
                     border: "1px solid #ccc",
