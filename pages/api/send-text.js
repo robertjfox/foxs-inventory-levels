@@ -101,7 +101,7 @@ export default async function handler(req, res) {
   try {
     const lastUpdatedData = await fetchLastUpdatedData();
     const results = [];
-
+ 
     for (const [store, phoneNumber] of Object.entries(phoneNumbers)) {
       const storeData = lastUpdatedData[store];
 
