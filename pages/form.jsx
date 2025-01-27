@@ -24,6 +24,13 @@ export default function MobileStoreSteps() {
   const storeNames = Object.keys(data || {});
   const defaultCategories = Object.keys(data[storeName] || {});
 
+
+  const allCategoriesSet = defaultCategories
+  .filter((c) => !(c === "lastUpdated" || (c === "shoes" && !storesWithShoes.includes(storeName))))
+  .every((c) => categories[c]);
+
+
+
   // Skip step 1 if storeFromParams is present
   useEffect(() => {
     if (storeFromParams) {
@@ -222,6 +229,7 @@ export default function MobileStoreSteps() {
           })}
           <button
             onClick={handleSubmit}
+            disabled={!allCategoriesSet}
             style={{
               width: "100%",
               padding: "10px",
@@ -232,6 +240,8 @@ export default function MobileStoreSteps() {
               cursor: "pointer",
               marginTop: "20px",
               fontSize: "1.5em",
+              opacity: allCategoriesSet ? 1 : 0.5,
+              pointerEvents: allCategoriesSet ? "auto" : "none",
             }}
           >
             Submit
