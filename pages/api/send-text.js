@@ -22,7 +22,7 @@ const storeNames = {
   Aventura: "Emily",
   "Boca Raton": "Stacie",
   Atlanta: "Rita",
-  Mineola: "Stacy",
+  Mineola: "Vincenza",
   Skokie: "Sara",
   Manhattan: "Marcy",
   Whippany: "Katie",
@@ -33,7 +33,7 @@ const storeNames = {
   Eastchester: "Gina",
   Brooklyn: "Cathy",
   "Forest Hills": "Suzie",
-  Huntington: "Christie",
+  Huntington: "Bonnie",
   "West Babylon": "Mayra",
 };
 
@@ -41,7 +41,7 @@ const phoneNumbers = {
   Aventura: "+15618668364",
   "Boca Raton": "+15617166900",
   Atlanta: "+16784140553",
-  Mineola: "+19174689903",
+  Mineola: "+15162503196",
   Skokie: "+18476684010",
   Manhattan: "+19178376674",
   Whippany: "+12012325191",
@@ -52,7 +52,7 @@ const phoneNumbers = {
   Eastchester: "+19145573081",
   Brooklyn: "+19178460271",
   "Forest Hills": "+19178866901",
-  Huntington: "+16318962527",
+  Huntington: "+16318556048",
   "West Babylon": "+15163178046",
 };
 
@@ -132,6 +132,24 @@ export default async function handler(req, res) {
 
       console.log(`Message successfully sent to ${store}: SID ${message.sid}`);
       results.push({ store, messageSid: message.sid });
+    }
+
+      if (new Date().getDay() === 3) {
+    
+          ['+15162824831', '+15163138924', '+15165372201'].forEach(async (number) => {
+        await client.messages.create({
+          body: `
+          See inventory levels for all stores at the following link:
+
+          https://foxs-inventory-levels.vercel.app/grid`,
+          from: twilioPhoneNumber,
+          to: number,
+        });
+      }
+      );
+
+      console.log("Message successfully sent to all Wednesday recipients.");
+
     }
 
     console.log("All messages processed successfully.");
