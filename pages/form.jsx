@@ -20,16 +20,14 @@ export default function MobileStoreSteps() {
   const [storeName, setStoreName] = useState("");
   const [categories, setCategories] = useState({});
   const [step, setStep] = useState(1);
+  const [loading, setLoading] = useState(true);
 
   const storeNames = Object.keys(data || {});
   const defaultCategories = Object.keys(data[storeName] || {});
 
-
   const allCategoriesSet = defaultCategories
   .filter((c) => !(c === "lastUpdated" || (c === "shoes" && !storesWithShoes.includes(storeName))))
   .every((c) => categories[c]);
-
-
 
   // Skip step 1 if storeFromParams is present
   useEffect(() => {
@@ -59,6 +57,8 @@ export default function MobileStoreSteps() {
     } catch (error) {
       console.error("Error fetching data:", error);
       alert("An error occurred while fetching data.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -227,6 +227,7 @@ export default function MobileStoreSteps() {
               </div>
             );
           })}
+          {!loading && (
           <button
             onClick={handleSubmit}
             disabled={!allCategoriesSet}
@@ -246,6 +247,7 @@ export default function MobileStoreSteps() {
           >
             Submit
           </button>
+          )}
         </div>
       )}
 
