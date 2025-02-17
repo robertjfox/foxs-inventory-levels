@@ -20,7 +20,7 @@ async function sendRenderedHTML() {
 
     await transporter.sendMail({
       from: '"Robert Fox" <robertjfox94@gmail.com>',
-      to: 'buyers@foxs.com, robert@foxs.com, bob@foxs.com, eileen@foxs.com',
+      to: 'buyers@foxs.com, robert@foxs.com, bob@foxs.com, eileen@foxs.com, carlos@foxs.com',
       subject: 'FOXS Inventory Levels',
       html
     });
@@ -32,6 +32,6 @@ async function sendRenderedHTML() {
 }
 
 // Call the function to send the email
-await sendRenderedHTML();
+// await sendRenderedHTML();
 
 export default sendRenderedHTML;

@@ -118,7 +118,7 @@ export default function Stores() {
   }
 
   const key = (
-    <div style={{ marginBottom: '20px', marginLeft: 80, marginTop: 10 }}>
+    <div style={{ marginBottom: '20px', marginTop: 10 }}>
       <span style={{ backgroundColor: '#5cb85c', padding: '5px', marginRight: '10px' }}>Green = Light</span>
       <span style={{ backgroundColor: '#a9a9a9', padding: '5px', marginRight: '10px' }}>Grey = Medium</span>
       <span style={{ backgroundColor: '#d9534f', padding: '5px' }}>Red = Heavy</span>
