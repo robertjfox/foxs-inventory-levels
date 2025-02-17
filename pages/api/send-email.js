@@ -19,8 +19,8 @@ async function sendRenderedHTML() {
     });
 
     await transporter.sendMail({
-      from: '"Your Name" <robertjfox94@gmail.com>',
-      to: 'robert@foxs.com',
+      from: '"Robert Fox" <robertjfox94@gmail.com>',
+      to: 'buyers@foxs.com, robert@foxs.com, bob@foxs.com, eileen@foxs.com',
       subject: 'FOXS Inventory Levels',
       html
     });
