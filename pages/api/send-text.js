@@ -2,6 +2,7 @@ import twilio from "twilio";
 import dotenv from "dotenv";
 import fetch from "node-fetch"; // Import fetch for API call
 import { startOfWeek, isAfter, parseISO } from "date-fns"; // For date comparison
+import sendRenderedHTML from "./send-email"; // Import the sendRenderedHTML function
 
 dotenv.config();
 
@@ -135,6 +136,9 @@ export default async function handler(req, res) {
     }
 
       if (new Date().getDay() === 3) {
+
+        // Call the function to send the email
+        await sendRenderedHTML(); // Await for the email to be sent before continuing
     
           ['+15162824831', '+15163138924', '+15165372201'].forEach(async (number) => {
         await client.messages.create({
