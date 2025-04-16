@@ -20,7 +20,7 @@ console.log("Twilio environment variables loaded successfully.");
 const client = twilio(accountSid, authToken);
 
 const storeNames = {
-  Aventura: "Emily",
+  // Aventura: "Emily",
   "Boca Raton": "Stacie",
   Atlanta: "Rita",
   Mineola: "Vincenza",
@@ -39,7 +39,7 @@ const storeNames = {
 };
 
 const phoneNumbers = {
-  Aventura: "+15618668364",
+  // Aventura: "+15618668364",
   "Boca Raton": "+15617166900",
   Atlanta: "+16784140553",
   Mineola: "+15162503196",
@@ -100,9 +100,11 @@ export default async function handler(req, res) {
   }
 
   try {
-    const lastUpdatedData = await fetchLastUpdatedData();
+    return;
+
+    const lastUpdatedData = await fetchLastUs;
     const results = [];
- 
+
     for (const [store, phoneNumber] of Object.entries(phoneNumbers)) {
       const storeData = lastUpdatedData[store];
 
@@ -135,25 +137,24 @@ export default async function handler(req, res) {
       results.push({ store, messageSid: message.sid });
     }
 
-      if (new Date().getDay() === 3) {
+    if (new Date().getDay() === 3) {
+      // Call the function to send the email
+      await sendRenderedHTML(); // Await for the email to be sent before continuing
 
-        // Call the function to send the email
-        await sendRenderedHTML(); // Await for the email to be sent before continuing
-    
-          ['+15162824831', '+15163138924', '+15165372201'].forEach(async (number) => {
-        await client.messages.create({
-          body: `
+      ["+15162824831", "+15163138924", "+15165372201"].forEach(
+        async (number) => {
+          await client.messages.create({
+            body: `
           See inventory levels for all stores at the following link:
 
           https://foxs-inventory-levels.vercel.app/grid`,
-          from: twilioPhoneNumber,
-          to: number,
-        });
-      }
+            from: twilioPhoneNumber,
+            to: number,
+          });
+        }
       );
 
       console.log("Message successfully sent to all Wednesday recipients.");
-
     }
 
     console.log("All messages processed successfully.");
