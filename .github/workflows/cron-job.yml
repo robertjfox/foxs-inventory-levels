@@ -1,16 +1,16 @@
-name: Weekly Text Message
+# name: Weekly Text Message
 
-on:
-  schedule:
-    - cron: "0 13 * * *"
+# on:
+#   schedule:
+#     - cron: "0 13 * * *"
 
-jobs:
-  send_text:
-    runs-on: ubuntu-latest
+# jobs:
+#   send_text:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Call Vercel API to Send Text
-        run: |
-          response=$(curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST https://foxs-inventory-levels.vercel.app/api/send-text)
-          echo "$response"
-        shell: bash
+#     steps:
+#       - name: Call Vercel API to Send Text
+#         run: |
+#           response=$(curl -s -w "\nHTTP_CODE:%{http_code}\n" -X POST https://foxs-inventory-levels.vercel.app/api/send-text)
+#           echo "$response"
+#         shell: bash
