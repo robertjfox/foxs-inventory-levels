@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { REQUIRED_FIELDS, FIELD_DISPLAY_NAMES } from "../constants/fields";
 
 export const storeIdToThreeLetterMap = {
   MINEOLA: "M80",
@@ -53,21 +54,16 @@ export default function Stores() {
           return obj;
         }, {});
 
-        // sort all categories alphabetically
+        // Ensure all stores have standardized fields and sort them
         for (const storeName in sortedData) {
-          sortedData[storeName] = Object.keys(sortedData[storeName])
-            .sort()
-            .reduce((obj, key) => {
-              obj[key] = sortedData[storeName][key];
-              return obj;
-            }, {});
-        }
+          const storeData = {};
 
-        // put lastUpdated at the end
-        for (const storeName in sortedData) {
-          const lastUpdated = sortedData[storeName].lastUpdated;
-          delete sortedData[storeName].lastUpdated;
-          sortedData[storeName].lastUpdated = lastUpdated;
+          // Add all required fields in order, using existing data or null as fallback
+          REQUIRED_FIELDS.forEach((field) => {
+            storeData[field] = sortedData[storeName][field] || null;
+          });
+
+          sortedData[storeName] = storeData;
         }
 
         setStores(sortedData);
@@ -96,7 +92,7 @@ export default function Stores() {
     }
   };
 
- // last monday
+  // last monday
   const currentOrLastMonday = () => {
     const today = new Date();
     const day = today.getDay();
@@ -114,14 +110,32 @@ export default function Stores() {
     lastUpdatedDate.setHours(23, 59, 59, 999);
 
     if (lastUpdatedDate < lastMonday) return 0.5;
-    return
-  }
+    return;
+  };
 
   const key = (
-    <div style={{ marginBottom: '20px', marginTop: 10 }}>
-      <span style={{ backgroundColor: '#5cb85c', padding: '5px', marginRight: '10px' }}>Green = Light</span>
-      <span style={{ backgroundColor: '#a9a9a9', padding: '5px', marginRight: '10px' }}>Grey = Medium</span>
-      <span style={{ backgroundColor: '#d9534f', padding: '5px' }}>Red = Heavy</span>
+    <div style={{ marginBottom: "20px", marginTop: 10 }}>
+      <span
+        style={{
+          backgroundColor: "#5cb85c",
+          padding: "5px",
+          marginRight: "10px",
+        }}
+      >
+        Green = Light
+      </span>
+      <span
+        style={{
+          backgroundColor: "#a9a9a9",
+          padding: "5px",
+          marginRight: "10px",
+        }}
+      >
+        Grey = Medium
+      </span>
+      <span style={{ backgroundColor: "#d9534f", padding: "5px" }}>
+        Red = Heavy
+      </span>
     </div>
   );
 
@@ -149,19 +163,24 @@ export default function Stores() {
               <th style={{ border: "1px solid #ccc", padding: "10px" }}>
                 Store
               </th>
-              {Object.keys(stores[Object.keys(stores)[0]]).map((category) => (
+              {REQUIRED_FIELDS.map((field) => (
                 <th
-                  key={category}
+                  key={field}
                   style={{ border: "1px solid #ccc", padding: "10px" }}
                 >
-                  {category}
+                  {FIELD_DISPLAY_NAMES[field] || field}
                 </th>
               ))}
             </tr>
           </thead>
           <tbody>
             {Object.keys(stores).map((storeName) => (
-              <tr key={storeName} style={{ opacity: getRowOpacity(stores[storeName].lastUpdated) }}>
+              <tr
+                key={storeName}
+                style={{
+                  opacity: getRowOpacity(stores[storeName].lastUpdated),
+                }}
+              >
                 <td
                   style={{
                     border: "1px solid #ccc",
@@ -172,10 +191,10 @@ export default function Stores() {
                 >
                   {storeIdToThreeLetterMap[storeName.toUpperCase()]}
                 </td>
-                {Object.keys(stores[storeName]).map((category) => {
-                  if (category === "lastUpdated") {
-                    const lastUpdated = stores[storeName][category]
-                      ? new Date(stores[storeName][category])
+                {REQUIRED_FIELDS.map((field) => {
+                  if (field === "lastUpdated") {
+                    const lastUpdated = stores[storeName][field]
+                      ? new Date(stores[storeName][field])
                       : null;
 
                     const dateString = lastUpdated
@@ -187,18 +206,17 @@ export default function Stores() {
 
                     return (
                       <td
-                        key={category}
+                        key={field}
                         style={{
                           border: "1px solid #ccc",
                           padding: "5px",
-                          // if level is null make text color 0.5
-                          color: getCellTextColor(stores[storeName][category]),
+                          color: getCellTextColor(stores[storeName][field]),
                           fontWeight:
-                            stores[storeName][category] === "light"
+                            stores[storeName][field] === "light"
                               ? "600"
                               : "normal",
                           backgroundColor: getBackgroundColor(
-                            stores[storeName][category]
+                            stores[storeName][field]
                           ),
                         }}
                       >
@@ -207,24 +225,49 @@ export default function Stores() {
                     );
                   }
 
+                  if (field === "notes") {
+                    const notes = stores[storeName][field] || "";
+                    const truncatedNotes =
+                      notes.length > 20
+                        ? notes.substring(0, 20) + "..."
+                        : notes;
+
+                    return (
+                      <td
+                        key={field}
+                        style={{
+                          border: "1px solid #ccc",
+                          padding: "5px",
+                          color: notes ? "#333" : "#b3b3b3",
+                          fontStyle: notes ? "normal" : "italic",
+                          maxWidth: "120px",
+                          wordWrap: "break-word",
+                        }}
+                        title={notes} // Show full notes on hover
+                      >
+                        {notes || "No notes"}
+                      </td>
+                    );
+                  }
+
+                  // Handle inventory level fields (apparel, shoes, jewelery, bags)
                   return (
                     <td
-                      key={category}
+                      key={field}
                       style={{
                         border: "1px solid #ccc",
                         padding: "5px",
-                        // if level is null make text color 0.5
-                        color: getCellTextColor(stores[storeName][category]),
+                        color: getCellTextColor(stores[storeName][field]),
                         fontWeight:
-                          stores[storeName][category] === "light"
+                          stores[storeName][field] === "light"
                             ? "600"
                             : "normal",
                         backgroundColor: getBackgroundColor(
-                          stores[storeName][category]
+                          stores[storeName][field]
                         ),
                       }}
                     >
-                      {category}
+                      {FIELD_DISPLAY_NAMES[field] || field}
                     </td>
                   );
                 })}

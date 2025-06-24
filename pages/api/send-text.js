@@ -20,18 +20,18 @@ console.log("Twilio environment variables loaded successfully.");
 const client = twilio(accountSid, authToken);
 
 const storeNames = {
-  // Aventura: "Emily",
+  Aventura: "Inna",
   "Boca Raton": "Stacie",
   Atlanta: "Rita",
   Mineola: "Vincenza",
-  Skokie: "Sara",
+  Skokie: "Lidia",
   Manhattan: "Marcy",
   Whippany: "Judy",
   Stamford: "Robert",
   Newton: "Natasha",
   Marlboro: "Staci",
   Ridgewood: "Rose Ann",
-  Eastchester: "Gina",
+  Eastchester: " Josie",
   Brooklyn: "Cathy",
   "Forest Hills": "Suzie",
   Huntington: "Bonnie",
@@ -39,18 +39,18 @@ const storeNames = {
 };
 
 const phoneNumbers = {
-  // Aventura: "+15618668364",
+  Aventura: "+19172076983",
   "Boca Raton": "+15617166900",
   Atlanta: "+16784140553",
   Mineola: "+15162503196",
-  Skokie: "+18476684010",
+  Skokie: "+17738150071",
   Manhattan: "+19178376674",
   Whippany: "+19083312966",
   Stamford: "+15162824831",
   Newton: "+16178175778",
   Marlboro: "+17323106645",
   Ridgewood: "+12017399838",
-  Eastchester: "+19145573081",
+  Eastchester: "+19142823221",
   Brooklyn: "+19178460271",
   "Forest Hills": "+19178866901",
   Huntington: "+16318556048",
@@ -100,8 +100,6 @@ export default async function handler(req, res) {
   }
 
   try {
-    return;
-
     const lastUpdatedData = await fetchLastUs;
     const results = [];
 

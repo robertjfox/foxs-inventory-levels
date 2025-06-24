@@ -1,14 +1,10 @@
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-
-const storesWithShoes = [
-  "Mineola",
-  "Huntington",
-  "Skokie",
-  "Atlanta",
-  "Ridgewood",
-  "Brooklyn",
-];
+import {
+  REQUIRED_FIELDS,
+  USER_SETTABLE_FIELDS,
+  FIELD_DISPLAY_NAMES,
+} from "../constants/fields";
 
 export default function MobileStoreSteps() {
   const router = useRouter();
@@ -23,11 +19,14 @@ export default function MobileStoreSteps() {
   const [loading, setLoading] = useState(true);
 
   const storeNames = Object.keys(data || {});
-  const defaultCategories = Object.keys(data[storeName] || {});
 
-  const allCategoriesSet = defaultCategories
-  .filter((c) => !(c === "lastUpdated" || (c === "shoes" && !storesWithShoes.includes(storeName))))
-  .every((c) => categories[c]);
+  // Use standardized fields instead of dynamic categories
+  const defaultCategories = REQUIRED_FIELDS;
+
+  const allCategoriesSet = USER_SETTABLE_FIELDS.filter(
+    (field) => field !== "notes"
+  ) // Notes is optional
+    .every((c) => categories[c]);
 
   // Skip step 1 if storeFromParams is present
   useEffect(() => {
@@ -44,15 +43,11 @@ export default function MobileStoreSteps() {
       const data = await response.json();
       setData(data);
 
-      const originalData = data[store] || {};
-      // Initialize categories with levels set to null
-      const updatedCategories = Object.keys(originalData).reduce(
-        (acc, category) => {
-          acc[category] = null;
-          return acc;
-        },
-        {}
-      );
+      // Initialize categories with standardized fields set to null
+      const updatedCategories = REQUIRED_FIELDS.reduce((acc, category) => {
+        acc[category] = null;
+        return acc;
+      }, {});
       setCategories(updatedCategories);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -86,14 +81,19 @@ export default function MobileStoreSteps() {
     const freshData = await fetch("/api/data");
     const freshDataJson = await freshData.json();
 
-    const categoriesWithTimeStamp = {
-      ...categories,
-      lastUpdated: timeStamp,
-    };
+    // Ensure we only save standardized fields
+    const standardizedCategories = {};
+    REQUIRED_FIELDS.forEach((field) => {
+      if (field === "lastUpdated") {
+        standardizedCategories[field] = timeStamp;
+      } else {
+        standardizedCategories[field] = categories[field];
+      }
+    });
 
     const updatedData = {
       ...freshDataJson,
-      [storeName]: categoriesWithTimeStamp,
+      [storeName]: standardizedCategories,
     };
 
     try {
@@ -181,6 +181,48 @@ export default function MobileStoreSteps() {
           {defaultCategories.map((category) => {
             if (category === "lastUpdated") return null;
 
+            // Handle notes field differently (textarea instead of dropdown)
+            if (category === "notes") {
+              return (
+                <div
+                  key={category}
+                  style={{
+                    marginBottom: "15px",
+                    display: "flex",
+                    flexDirection: "column",
+                  }}
+                >
+                  <label
+                    style={{
+                      marginBottom: "8px",
+                      fontSize: "1.5em",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {FIELD_DISPLAY_NAMES[category] || category} (Optional)
+                  </label>
+                  <textarea
+                    value={categories[category] || ""}
+                    onChange={(e) =>
+                      handleCategoryChange(category, e.target.value)
+                    }
+                    placeholder="Add any additional notes here..."
+                    style={{
+                      width: "100%",
+                      padding: "10px",
+                      borderRadius: "5px",
+                      border: "1px solid #ccc",
+                      fontSize: "1.2em",
+                      minHeight: "80px",
+                      resize: "vertical",
+                      fontFamily: "Arial, sans-serif",
+                    }}
+                  />
+                </div>
+              );
+            }
+
+            // Handle inventory level fields (apparel, shoes, jewelery, bags)
             return (
               <div
                 key={category}
@@ -188,11 +230,7 @@ export default function MobileStoreSteps() {
                   marginBottom: "10px",
                   gap: 20,
                   alignItems: "center",
-                  // hide if storeName is not in storesWithShoes
-                  display:
-                    category === "shoes" && !storesWithShoes.includes(storeName)
-                      ? "none"
-                      : "flex",
+                  display: "flex",
                 }}
               >
                 <label
@@ -203,7 +241,7 @@ export default function MobileStoreSteps() {
                     fontSize: "1.5em",
                   }}
                 >
-                  {category}
+                  {FIELD_DISPLAY_NAMES[category] || category}
                 </label>
                 <select
                   value={categories[category] || ""}
@@ -228,25 +266,25 @@ export default function MobileStoreSteps() {
             );
           })}
           {!loading && (
-          <button
-            onClick={handleSubmit}
-            disabled={!allCategoriesSet}
-            style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#0070f3",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              marginTop: "20px",
-              fontSize: "1.5em",
-              opacity: allCategoriesSet ? 1 : 0.5,
-              pointerEvents: allCategoriesSet ? "auto" : "none",
-            }}
-          >
-            Submit
-          </button>
+            <button
+              onClick={handleSubmit}
+              disabled={!allCategoriesSet}
+              style={{
+                width: "100%",
+                padding: "10px",
+                backgroundColor: "#0070f3",
+                color: "#fff",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                marginTop: "20px",
+                fontSize: "1.5em",
+                opacity: allCategoriesSet ? 1 : 0.5,
+                pointerEvents: allCategoriesSet ? "auto" : "none",
+              }}
+            >
+              Submit
+            </button>
           )}
         </div>
       )}
