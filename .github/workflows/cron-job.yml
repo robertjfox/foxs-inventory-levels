@@ -3,6 +3,7 @@ name: Weekly Text Message
 on:
   schedule:
     - cron: "0 13 * * *"
+  workflow_dispatch:
 
 jobs:
   send_text:
