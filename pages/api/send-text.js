@@ -2,7 +2,7 @@ import twilio from "twilio";
 import dotenv from "dotenv";
 import fetch from "node-fetch"; // Import fetch for API call
 import { startOfWeek, isAfter, parseISO } from "date-fns"; // For date comparison
-import sendRenderedHTML from "./send-email"; // Import the sendRenderedHTML function
+import { sendRenderedHTML } from "./send-email"; // Import the sendRenderedHTML function
 
 dotenv.config();
 
@@ -100,6 +100,32 @@ export default async function handler(req, res) {
   }
 
   try {
+    // Check if this is a test request
+    const isTest = req.query.test === "true";
+
+    if (isTest) {
+      // Test mode: send only to Robert
+      console.log("Sending test message to Robert...");
+      const message = await client.messages.create({
+        body: `Test message from FOXS Inventory System 🦊
+
+See current inventory levels at:
+https://foxs-inventory-levels.vercel.app/grid
+
+This is a test message.`,
+        from: twilioPhoneNumber,
+        to: "+15162824831",
+      });
+
+      console.log(`Test message sent successfully: SID ${message.sid}`);
+      return res.status(200).json({
+        success: true,
+        message: "Test text sent successfully",
+        messageSid: message.sid,
+      });
+    }
+
+    // Original functionality for automated sends
     const lastUpdatedData = await fetchLastUpdatedData();
     const results = [];
 

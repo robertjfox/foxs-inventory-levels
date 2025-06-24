@@ -148,23 +148,123 @@ export default function Stores() {
           Red = Heavy
         </span>
       </div>
-      <button
-        onClick={() => window.print()}
+      <div
         style={{
-          backgroundColor: "#007bff",
-          color: "white",
-          border: "none",
-          padding: "8px 16px",
-          borderRadius: "4px",
-          cursor: "pointer",
-          fontSize: "0.9rem",
-          fontWeight: "500",
+          display: "flex",
+          gap: "10px",
+          "@media print": { display: "none" },
         }}
-        onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
-        onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+        className="no-print"
       >
-        🖨️ Print
-      </button>
+        {typeof window !== "undefined" &&
+          window.location.hostname === "localhost" && (
+            <>
+              <button
+                onClick={async () => {
+                  if (confirm("Send test email with current inventory data?")) {
+                    try {
+                      const response = await fetch("/api/send-email", {
+                        method: "POST",
+                      });
+                      if (response.ok) {
+                        alert("Test email sent successfully!");
+                      } else {
+                        alert(
+                          "Failed to send email. Check console for details."
+                        );
+                        console.error(
+                          "Email send failed:",
+                          await response.text()
+                        );
+                      }
+                    } catch (error) {
+                      alert("Error sending email: " + error.message);
+                      console.error("Email error:", error);
+                    }
+                  }
+                }}
+                style={{
+                  backgroundColor: "#28a745",
+                  color: "white",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                }}
+                onMouseOver={(e) =>
+                  (e.target.style.backgroundColor = "#218838")
+                }
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#28a745")}
+              >
+                📧 Test Email
+              </button>
+              <button
+                onClick={async () => {
+                  if (
+                    confirm("Send test text message to Robert (5162824831)?")
+                  ) {
+                    try {
+                      const response = await fetch("/api/send-text?test=true", {
+                        method: "POST",
+                      });
+                      if (response.ok) {
+                        alert("Test text sent successfully!");
+                      } else {
+                        alert(
+                          "Failed to send text. Check console for details."
+                        );
+                        console.error(
+                          "Text send failed:",
+                          await response.text()
+                        );
+                      }
+                    } catch (error) {
+                      alert("Error sending text: " + error.message);
+                      console.error("Text error:", error);
+                    }
+                  }
+                }}
+                style={{
+                  backgroundColor: "#6f42c1",
+                  color: "white",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                }}
+                onMouseOver={(e) =>
+                  (e.target.style.backgroundColor = "#5a2d91")
+                }
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#6f42c1")}
+              >
+                📱 Test Text
+              </button>
+              <button
+                onClick={() => window.print()}
+                style={{
+                  backgroundColor: "#007bff",
+                  color: "white",
+                  border: "none",
+                  padding: "8px 16px",
+                  borderRadius: "4px",
+                  cursor: "pointer",
+                  fontSize: "0.9rem",
+                  fontWeight: "500",
+                }}
+                onMouseOver={(e) =>
+                  (e.target.style.backgroundColor = "#0056b3")
+                }
+                onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
+              >
+                🖨️ Print
+              </button>
+            </>
+          )}
+      </div>
     </div>
   );
 
@@ -313,6 +413,11 @@ export default function Stores() {
           }
           button {
             font-size: 0.9rem;
+          }
+        }
+        @media print {
+          .no-print {
+            display: none !important;
           }
         }
       `}</style>
