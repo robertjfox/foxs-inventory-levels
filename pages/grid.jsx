@@ -114,28 +114,57 @@ export default function Stores() {
   };
 
   const key = (
-    <div style={{ marginBottom: "20px", marginTop: 10 }}>
-      <span
+    <div
+      style={{
+        marginBottom: "20px",
+        marginTop: 10,
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        flexWrap: "wrap",
+        gap: "10px",
+      }}
+    >
+      <div>
+        <span
+          style={{
+            backgroundColor: "#5cb85c",
+            padding: "5px",
+            marginRight: "10px",
+          }}
+        >
+          Green = Light
+        </span>
+        <span
+          style={{
+            backgroundColor: "#a9a9a9",
+            padding: "5px",
+            marginRight: "10px",
+          }}
+        >
+          Grey = Medium
+        </span>
+        <span style={{ backgroundColor: "#d9534f", padding: "5px" }}>
+          Red = Heavy
+        </span>
+      </div>
+      <button
+        onClick={() => window.print()}
         style={{
-          backgroundColor: "#5cb85c",
-          padding: "5px",
-          marginRight: "10px",
+          backgroundColor: "#007bff",
+          color: "white",
+          border: "none",
+          padding: "8px 16px",
+          borderRadius: "4px",
+          cursor: "pointer",
+          fontSize: "0.9rem",
+          fontWeight: "500",
         }}
+        onMouseOver={(e) => (e.target.style.backgroundColor = "#0056b3")}
+        onMouseOut={(e) => (e.target.style.backgroundColor = "#007bff")}
       >
-        Green = Light
-      </span>
-      <span
-        style={{
-          backgroundColor: "#a9a9a9",
-          padding: "5px",
-          marginRight: "10px",
-        }}
-      >
-        Grey = Medium
-      </span>
-      <span style={{ backgroundColor: "#d9534f", padding: "5px" }}>
-        Red = Heavy
-      </span>
+        🖨️ Print
+      </button>
     </div>
   );
 
@@ -144,7 +173,7 @@ export default function Stores() {
       style={{
         padding: 0,
         fontFamily: "Arial, sans-serif",
-        maxWidth: 700,
+        maxWidth: 900,
         overflowX: "auto",
       }}
     >
@@ -227,23 +256,21 @@ export default function Stores() {
 
                   if (field === "notes") {
                     const notes = stores[storeName][field] || "";
-                    const truncatedNotes =
-                      notes.length > 20
-                        ? notes.substring(0, 20) + "..."
-                        : notes;
 
                     return (
                       <td
                         key={field}
                         style={{
                           border: "1px solid #ccc",
-                          padding: "5px",
+                          padding: "8px",
                           color: notes ? "#333" : "#b3b3b3",
                           fontStyle: notes ? "normal" : "italic",
-                          maxWidth: "120px",
+                          minWidth: "200px",
+                          maxWidth: "300px",
                           wordWrap: "break-word",
+                          whiteSpace: "normal",
+                          lineHeight: "1.3",
                         }}
-                        title={notes} // Show full notes on hover
                       >
                         {notes || "No notes"}
                       </td>

@@ -6,6 +6,16 @@ import {
   FIELD_DISPLAY_NAMES,
 } from "../constants/fields";
 
+// Stores that carry shoes and should show the shoes input
+const storesWithShoes = [
+  "Mineola",
+  "Huntington",
+  "Skokie",
+  "Atlanta",
+  "Ridgewood",
+  "Brooklyn",
+];
+
 export default function MobileStoreSteps() {
   const router = useRouter();
 
@@ -23,9 +33,13 @@ export default function MobileStoreSteps() {
   // Use standardized fields instead of dynamic categories
   const defaultCategories = REQUIRED_FIELDS;
 
+  // Check if all required categories are set (excluding shoes for stores without shoes)
   const allCategoriesSet = USER_SETTABLE_FIELDS.filter(
     (field) => field !== "notes"
   ) // Notes is optional
+    .filter(
+      (field) => !(field === "shoes" && !storesWithShoes.includes(storeName))
+    ) // Exclude shoes for stores without shoes
     .every((c) => categories[c]);
 
   // Skip step 1 if storeFromParams is present
@@ -34,8 +48,24 @@ export default function MobileStoreSteps() {
       setStoreName(storeFromParams);
       handleFetchData(storeFromParams);
       setStep(2);
+    } else {
+      // Fetch initial data for store list
+      fetchInitialData();
     }
   }, [storeFromParams]);
+
+  const fetchInitialData = async () => {
+    try {
+      const response = await fetch("/api/data");
+      const data = await response.json();
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching initial data:", error);
+      alert("An error occurred while loading stores.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleFetchData = async (store) => {
     try {
@@ -86,6 +116,9 @@ export default function MobileStoreSteps() {
     REQUIRED_FIELDS.forEach((field) => {
       if (field === "lastUpdated") {
         standardizedCategories[field] = timeStamp;
+      } else if (field === "shoes" && !storesWithShoes.includes(storeName)) {
+        // Force shoes to null for stores that don't carry shoes
+        standardizedCategories[field] = null;
       } else {
         standardizedCategories[field] = categories[field];
       }
@@ -138,46 +171,75 @@ export default function MobileStoreSteps() {
     >
       {step === 1 && (
         <div>
-          <h1>Select Store Name</h1>
-          <select
-            value={storeName}
-            onChange={(e) => setStoreName(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "10px",
-              marginBottom: "10px",
-              borderRadius: "5px",
-              border: "1px solid #ccc",
-            }}
-          >
-            <option value="">Select Store</option>
-            {storeNames.map((name) => (
-              <option key={name} value={name}>
-                {name}
-              </option>
-            ))}
-          </select>
-          <button
-            onClick={handleStoreNameSubmit}
-            style={{
-              width: "100%",
-              padding: "10px",
-              backgroundColor: "#0070f3",
-              color: "#fff",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            Next
-          </button>
+          <h1 style={{ fontSize: "2rem", marginBottom: "20px" }}>
+            Select Store Name
+          </h1>
+
+          {loading ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "40px",
+                color: "#666",
+                fontSize: "1.1em",
+              }}
+            >
+              Loading stores...
+            </div>
+          ) : (
+            <>
+              <select
+                value={storeName}
+                onChange={(e) => setStoreName(e.target.value)}
+                style={{
+                  width: "100%",
+                  padding: "15px",
+                  marginBottom: "20px",
+                  borderRadius: "8px",
+                  border: "2px solid #e9ecef",
+                  fontSize: "1.1em",
+                  backgroundColor: "#fff",
+                  cursor: "pointer",
+                }}
+              >
+                <option value="">Select Store</option>
+                {storeNames.sort().map((name) => (
+                  <option key={name} value={name}>
+                    {name}
+                  </option>
+                ))}
+              </select>
+
+              <button
+                onClick={handleStoreNameSubmit}
+                disabled={!storeName}
+                style={{
+                  width: "100%",
+                  padding: "15px",
+                  backgroundColor: storeName ? "#0070f3" : "#ccc",
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: "8px",
+                  cursor: storeName ? "pointer" : "not-allowed",
+                  fontSize: "1.2em",
+                  fontWeight: "bold",
+                  transition: "background-color 0.2s ease",
+                }}
+              >
+                {storeName
+                  ? `Continue with ${storeName}`
+                  : "Select a Store First"}
+              </button>
+            </>
+          )}
         </div>
       )}
 
       {step === 2 && (
         <div>
-          <h1>{storeName}</h1>
-          <h1>Set Category Levels</h1>
+          <h1 style={{ fontSize: "2rem", marginBottom: "20px" }}>
+            Set Category Levels
+          </h1>
           {defaultCategories.map((category) => {
             if (category === "lastUpdated") return null;
 
@@ -187,6 +249,7 @@ export default function MobileStoreSteps() {
                 <div
                   key={category}
                   style={{
+                    marginTop: "30px",
                     marginBottom: "15px",
                     display: "flex",
                     flexDirection: "column",
@@ -195,7 +258,7 @@ export default function MobileStoreSteps() {
                   <label
                     style={{
                       marginBottom: "8px",
-                      fontSize: "1.5em",
+                      fontSize: "2rem",
                       fontWeight: "bold",
                     }}
                   >
@@ -206,6 +269,7 @@ export default function MobileStoreSteps() {
                     onChange={(e) =>
                       handleCategoryChange(category, e.target.value)
                     }
+                    maxLength={100}
                     placeholder="Add any additional notes here..."
                     style={{
                       width: "100%",
@@ -216,8 +280,19 @@ export default function MobileStoreSteps() {
                       minHeight: "80px",
                       resize: "vertical",
                       fontFamily: "Arial, sans-serif",
+                      boxSizing: "border-box",
                     }}
                   />
+                  <div
+                    style={{
+                      fontSize: "0.9em",
+                      color: "#666",
+                      marginTop: "5px",
+                      textAlign: "right",
+                    }}
+                  >
+                    {(categories[category] || "").length}/100 characters
+                  </div>
                 </div>
               );
             }
@@ -230,7 +305,10 @@ export default function MobileStoreSteps() {
                   marginBottom: "10px",
                   gap: 20,
                   alignItems: "center",
-                  display: "flex",
+                  display:
+                    category === "shoes" && !storesWithShoes.includes(storeName)
+                      ? "none"
+                      : "flex",
                 }}
               >
                 <label
@@ -291,7 +369,53 @@ export default function MobileStoreSteps() {
 
       {step === 3 && (
         <div>
-          <h1>Thank you for your submission!</h1>
+          <h1 style={{ fontSize: "2rem", marginBottom: "20px" }}>
+            Thank you for your submission!
+          </h1>
+
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "30px",
+              padding: "20px",
+              backgroundColor: "#f8f9fa",
+              borderRadius: "8px",
+              border: "1px solid #e9ecef",
+            }}
+          >
+            <p
+              style={{
+                fontSize: "1.1em",
+                marginBottom: "20px",
+                color: "#333",
+              }}
+            >
+              If you need anything else - text Robert
+            </p>
+
+            <a
+              href="sms:5162824831"
+              style={{
+                display: "inline-block",
+                padding: "12px 24px",
+                backgroundColor: "#28a745",
+                color: "#fff",
+                textDecoration: "none",
+                borderRadius: "8px",
+                fontSize: "1.1em",
+                fontWeight: "bold",
+                transition: "background-color 0.2s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = "#218838";
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = "#28a745";
+              }}
+            >
+              📱 Text Robert
+            </a>
+          </div>
         </div>
       )}
     </div>

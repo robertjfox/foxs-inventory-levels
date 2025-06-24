@@ -1,9 +1,9 @@
 // Standardized fields that every store must have
 export const REQUIRED_FIELDS = [
   "apparel",
-  "shoes",
   "jewelery",
   "bags",
+  "shoes",
   "notes",
   "lastUpdated",
 ];
