@@ -113,8 +113,12 @@ This is a test message.`,
     for (const [store, contacts] of Object.entries(storeConfig)) {
       const storeData = lastUpdatedData[store];
 
-      // Skip if lastUpdated is since last Monday
-      if (storeData && isUpdatedSinceMonday(storeData.lastUpdated)) {
+      // Skip if lastUpdated is since last Monday (except for Test Store)
+      if (
+        store !== "Test Store" &&
+        storeData &&
+        isUpdatedSinceMonday(storeData.lastUpdated)
+      ) {
         continue;
       }
 
