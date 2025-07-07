@@ -1,0 +1,43 @@
+name: Weekly Inventory Communications
+
+on:
+  schedule:
+    # Run every Wednesday at 9:00 AM EST (14:00 UTC)
+    - cron: "0 14 * * 3"
+  # Allow manual triggering for testing
+  workflow_dispatch:
+
+jobs:
+  send-weekly-communications:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Send Weekly Email
+        run: |
+          echo "📧 Sending weekly inventory email..."
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            https://foxs-inventory-levels.vercel.app/api/send-email
+
+          if [ $? -eq 0 ]; then
+            echo "✅ Weekly email sent successfully"
+          else
+            echo "❌ Failed to send weekly email"
+            exit 1
+          fi
+
+      - name: Send Wednesday Text Messages
+        run: |
+          echo "📱 Sending Wednesday text messages..."
+          curl -X POST \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            https://foxs-inventory-levels.vercel.app/api/send-wednesday-texts
+
+          if [ $? -eq 0 ]; then
+            echo "✅ Wednesday texts sent successfully"
+          else
+            echo "❌ Failed to send Wednesday texts"
+            exit 1
+          fi

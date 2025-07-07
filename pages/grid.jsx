@@ -161,7 +161,19 @@ export default function Stores() {
             <>
               <button
                 onClick={async () => {
-                  if (confirm("Send test email with current inventory data?")) {
+                  const emailRecipients = [
+                    "buyers@foxs.com",
+                    "robert@foxs.com",
+                    "bob@foxs.com",
+                    "eileen@foxs.com",
+                    "carlos@foxs.com",
+                  ];
+
+                  const confirmMessage = `Send test email with current inventory data to:\n\n${emailRecipients.join(
+                    "\n"
+                  )}\n\nContinue?`;
+
+                  if (confirm(confirmMessage)) {
                     try {
                       const response = await fetch("/api/send-email", {
                         method: "POST",
