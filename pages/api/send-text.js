@@ -35,6 +35,7 @@ const storeConfig = {
   "Forest Hills": [{ name: "Suzie", phone: "+19178866901" }],
   Huntington: [{ name: "Bonnie", phone: "+16318556048" }],
   "West Babylon": [{ name: "Mayra", phone: "+15163178046" }],
+  "Test Store": [{ name: "Test", phone: "+15162824831" }],
 };
 
 // Fetch last updated data from API
