@@ -10,14 +10,14 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "chrome-aws-lambda": "^10.1.0",
+    "@sparticuz/chromium": "^131.0.0",
     "date-fns": "^4.1.0",
     "dotenv": "^16.4.7",
     "fs": "^0.0.1-security",
     "next": "15.1.0",
     "node-fetch": "^3.3.2",
     "nodemailer": "^6.10.0",
-    "puppeteer-core": "^10.1.0",
+    "puppeteer-core": "^23.8.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "twilio": "^5.4.0"
