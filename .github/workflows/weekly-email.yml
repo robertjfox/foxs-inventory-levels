@@ -15,29 +15,35 @@ jobs:
       - name: Send Weekly Email
         run: |
           echo "📧 Sending weekly inventory email..."
-          curl -X POST \
+          response=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d '{}' \
-            https://foxs-inventory-levels.vercel.app/api/send-email
+            https://foxs-inventory-levels.vercel.app/api/send-email)
 
-          if [ $? -eq 0 ]; then
+          echo "Response: $response"
+
+          if echo "$response" | grep -q '"success":true'; then
             echo "✅ Weekly email sent successfully"
           else
             echo "❌ Failed to send weekly email"
+            echo "Error details: $response"
             exit 1
           fi
 
       - name: Send Wednesday Text Messages
         run: |
           echo "📱 Sending Wednesday text messages..."
-          curl -X POST \
+          response=$(curl -s -X POST \
             -H "Content-Type: application/json" \
             -d '{}' \
-            https://foxs-inventory-levels.vercel.app/api/send-wednesday-texts
+            https://foxs-inventory-levels.vercel.app/api/send-wednesday-texts)
 
-          if [ $? -eq 0 ]; then
+          echo "Response: $response"
+
+          if echo "$response" | grep -q '"success":true'; then
             echo "✅ Wednesday texts sent successfully"
           else
             echo "❌ Failed to send Wednesday texts"
+            echo "Error details: $response"
             exit 1
           fi

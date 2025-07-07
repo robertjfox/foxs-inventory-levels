@@ -3,7 +3,19 @@ import puppeteer from "puppeteer";
 
 async function sendRenderedHTML() {
   try {
-    const browser = await puppeteer.launch();
+    const browser = await puppeteer.launch({
+      args: [
+        "--no-sandbox",
+        "--disable-setuid-sandbox",
+        "--disable-dev-shm-usage",
+        "--disable-accelerated-2d-canvas",
+        "--no-first-run",
+        "--no-zygote",
+        "--single-process",
+        "--disable-gpu",
+      ],
+      headless: true,
+    });
     const page = await browser.newPage();
     await page.goto("https://foxs-inventory-levels.vercel.app/grid", {
       waitUntil: "networkidle0",
