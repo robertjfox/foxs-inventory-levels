@@ -2,6 +2,22 @@ import nodemailer from "nodemailer";
 import chromium from "@sparticuz/chromium";
 import puppeteer from "puppeteer-core";
 
+const emailRecipients = [
+  "maryt@foxs.com",
+  "pam@foxs.com",
+  "fran@foxs.com",
+  "christine@foxs.com",
+  "alexf@foxs.com",
+  "cissy@foxs.com",
+  "alexa@foxs.com",
+  "stacey@foxs.com",
+  "robert@foxs.com",
+  "bob@foxs.com",
+  "eileen@foxs.com",
+  "carlos@foxs.com",
+  "oneesa@foxs.com",
+];
+
 async function sendRenderedHTML() {
   try {
     const browser = await puppeteer.launch({
@@ -28,7 +44,7 @@ async function sendRenderedHTML() {
 
     await transporter.sendMail({
       from: '"Robert Fox" <robertjfox94@gmail.com>',
-      to: "buyers@foxs.com, robert@foxs.com, bob@foxs.com, eileen@foxs.com, carlos@foxs.com",
+      to: emailRecipients.join(","),
       // to: "robert@foxs.com",
       subject: "FOXS Inventory Levels - Test Email",
       html,
