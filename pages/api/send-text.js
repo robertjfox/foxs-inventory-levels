@@ -26,7 +26,7 @@ const storeConfig = {
   Skokie: [{ name: "Lidia", phone: "+17738150071" }],
   Manhattan: [{ name: "Marcy", phone: "+19178376674" }],
   Whippany: [{ name: "Judy", phone: "+19083312966" }],
-  Stamford: [{ name: "Christine", phone: "+15162824831" }],
+  Stamford: [{ name: "Christine", phone: "+16462854297" }],
   Newton: [{ name: "Natasha", phone: "+16178175778" }],
   Marlboro: [{ name: "Staci", phone: "+17323106645" }],
   Ridgewood: [{ name: "Rose Ann", phone: "+12017399838" }],
